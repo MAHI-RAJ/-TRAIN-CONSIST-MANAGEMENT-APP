@@ -1,32 +1,31 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class TrainConsistApp {
     public static void main(String[] args) {
-        System.out.println("=== Train Consist Management App (UC2) ===");
+        System.out.println("=== Train Consist Management App (UC3) ===");
 
-        // 1. Initialize the ArrayList for Passenger Bogies
-        List<String> passengerBogies = new ArrayList<>();
+        // 1. Initialize a HashSet to store unique Bogie IDs
+        Set<String> bogieIds = new HashSet<>();
 
-        // 2. ADD: Attaching bogies to the train
-        passengerBogies.add("Sleeper");
-        passengerBogies.add("AC Chair");
-        passengerBogies.add("First Class");
+        // 2. Add Bogie IDs (including intentional duplicates)
+        System.out.println("Registering Bogie IDs...");
+        bogieIds.add("BG101");
+        bogieIds.add("BG102");
+        bogieIds.add("BG103");
 
-        System.out.println("Current Consist: " + passengerBogies);
-        System.out.println("Total Bogies: " + passengerBogies.size());
+        // Attempting to add a duplicate ID
+        System.out.println("Attempting to add duplicate ID: BG101");
+        boolean isAdded = bogieIds.add("BG101");
 
-        // 3. REMOVE: Detaching a bogie (e.g., maintenance or route change)
-        System.out.println("\nRemoving 'AC Chair' from the consist...");
-        passengerBogies.remove("AC Chair");
+        // 3. Check if the duplicate was accepted
+        if (!isAdded) {
+            System.out.println("Alert: Duplicate ID 'BG101' rejected by the system.");
+        }
 
-        // 4. CONTAINS: Checking if a specific bogie exists
-        boolean hasSleeper = passengerBogies.contains("Sleeper");
-        System.out.println("Does the train have a Sleeper bogie? " + (hasSleeper ? "Yes" : "No"));
-
-        // 5. Final State Display
-        System.out.println("\nFinal Consist Summary:");
-        System.out.println(passengerBogies);
-        System.out.println("Final Bogie Count: " + passengerBogies.size());
+        // 4. Display the Final Unique Set
+        System.out.println("\nRegistered Unique Bogie IDs:");
+        System.out.println(bogieIds);
+        System.out.println("Total Unique Bogies: " + bogieIds.size());
     }
 }
