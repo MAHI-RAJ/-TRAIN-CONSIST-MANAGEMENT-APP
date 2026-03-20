@@ -1,31 +1,36 @@
-import java.util.HashSet;
-import java.util.Set;
+
+import java.util.LinkedList;
 
 public class TrainConsistApp {
     public static void main(String[] args) {
-        System.out.println("=== Train Consist Management App (UC3) ===");
+        System.out.println("=== Train Consist Management App (UC4) ===");
 
-        // 1. Initialize a HashSet to store unique Bogie IDs
-        Set<String> bogieIds = new HashSet<>();
+        // 1. Initialize the LinkedList (The Chain)
+        LinkedList<String> trainConsist = new LinkedList<>();
 
-        // 2. Add Bogie IDs (including intentional duplicates)
-        System.out.println("Registering Bogie IDs...");
-        bogieIds.add("BG101");
-        bogieIds.add("BG102");
-        bogieIds.add("BG103");
+        // 2. Add base bogies
+        trainConsist.add("Sleeper");
+        trainConsist.add("AC Coach");
+        trainConsist.add("Cargo");
 
-        // Attempting to add a duplicate ID
-        System.out.println("Attempting to add duplicate ID: BG101");
-        boolean isAdded = bogieIds.add("BG101");
+        // 3. addFirst / addLast: Positioning the Engine and Guard
+        System.out.println("Attaching Engine and Guard Coach...");
+        trainConsist.addFirst("Engine");
+        trainConsist.addLast("Guard Coach");
 
-        // 3. Check if the duplicate was accepted
-        if (!isAdded) {
-            System.out.println("Alert: Duplicate ID 'BG101' rejected by the system.");
-        }
+        // 4. add(index, element): Inserting in the middle
+        System.out.println("Inserting Pantry Car at position 2...");
+        trainConsist.add(2, "Pantry Car");
 
-        // 4. Display the Final Unique Set
-        System.out.println("\nRegistered Unique Bogie IDs:");
-        System.out.println(bogieIds);
-        System.out.println("Total Unique Bogies: " + bogieIds.size());
+        System.out.println("Current Train Formation: " + trainConsist);
+
+        // 5. removeFirst / removeLast: Detaching ends
+        System.out.println("\nDetaching Engine and Guard Coach for maintenance...");
+        trainConsist.removeFirst();
+        trainConsist.removeLast();
+
+        // 6. Final State Display
+        System.out.println("Final Ordered Consist: " + trainConsist);
+        System.out.println("Total Bogies remaining: " + trainConsist.size());
     }
 }
