@@ -47,3 +47,4 @@ public class Train {
         scanner.close();
     }
 }
+
