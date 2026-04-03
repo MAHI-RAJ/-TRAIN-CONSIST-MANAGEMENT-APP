@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.List;
-
 public class Train {
 
     static class Bogie {
@@ -23,9 +22,9 @@ public class Train {
         @Override
         public String toString() {
             return "Bogie Name: " + name + ", Capacity: " + capacity;
+
         }
     }
-
     public static void main(String[] args) {
         List<Bogie> bogies = new ArrayList<>();
 
@@ -46,3 +45,4 @@ public class Train {
         System.out.println("\nProgram continues...");
     }
 }
+
