@@ -1,32 +1,74 @@
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
-public class TrainConsistApp {
+public class Train{
+
+    // Bogie class
+    static class Bogie {
+        private String name;
+        private int capacity;
+
+        public Bogie(String name, int capacity) {
+            this.name = name;
+            this.capacity = capacity;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public int getCapacity() {
+            return capacity;
+        }
+
+        @Override
+        public String toString() {
+            return "Bogie Name: " + name + ", Capacity: " + capacity;
+        }
+    }
+
+    // Method to filter bogies using Stream API
+    public static List<Bogie> filterBogiesByCapacity(List<Bogie> bogies, int threshold) {
+        return bogies.stream()
+                .filter(b -> b.getCapacity() > threshold)
+                .collect(Collectors.toList());
+    }
+
     public static void main(String[] args) {
-        System.out.println("=== Train Consist Management App (UC6) ===");
 
-        // 1. Initialize HashMap: Key (String) -> Value (Integer)
-        Map<String, Integer> bogieCapacities = new HashMap<>();
+        // Original bogie list
+        List<Bogie> bogies = new ArrayList<>();
+        bogies.add(new Bogie("Sleeper", 72));
+        bogies.add(new Bogie("AC Chair", 56));
+        bogies.add(new Bogie("First Class", 24));
+        bogies.add(new Bogie("General Coach", 90));
 
-        // 2. put() Method: Mapping Bogie Names to their Seat/Load Capacities
-        System.out.println("Registering Bogie Capacities...");
-        bogieCapacities.put("Sleeper", 72);
-        bogieCapacities.put("AC Chair", 56);
-        bogieCapacities.put("First Class", 24);
-        bogieCapacities.put("General", 90);
+        int threshold = 60;
 
-        // 3. entrySet() Iteration: Accessing both Key and Value together
-        System.out.println("\n--- Train Capacity Directory ---");
-        for (Map.Entry<String, Integer> entry : bogieCapacities.entrySet()) {
-            System.out.println("Bogie Type: " + entry.getKey() +
-                    " | Capacity: " + entry.getValue() + " seats");
+        System.out.println("Original Passenger Bogies:");
+        for (Bogie bogie : bogies) {
+            System.out.println(bogie);
         }
 
-        // 4. Fast Lookup: Retrieving a specific value using a Key
-        String searchBogie = "AC Chair";
-        if (bogieCapacities.containsKey(searchBogie)) {
-            System.out.println("\nQuick Search: " + searchBogie +
-                    " has a capacity of " + bogieCapacities.get(searchBogie) + ".");
+        // Filter using streams
+        List<Bogie> filteredBogies = filterBogiesByCapacity(bogies, threshold);
+
+        System.out.println("\nFiltered Passenger Bogies (Capacity > " + threshold + "):");
+        if (filteredBogies.isEmpty()) {
+            System.out.println("No bogies matched the filter condition.");
+        } else {
+            for (Bogie bogie : filteredBogies) {
+                System.out.println(bogie);
+            }
         }
+
+        // Show original list remains unchanged
+        System.out.println("\nOriginal Passenger Bogies After Filtering (Unchanged):");
+        for (Bogie bogie : bogies) {
+            System.out.println(bogie);
+        }
+
+        System.out.println("\nProgram continues...");
     }
 }
