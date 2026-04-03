@@ -33,6 +33,7 @@ public class Train {
 
         @Override
         public String toString() {
+
             return "PassengerBogie{type='" + type + "', capacity=" + capacity + "}";
         }
     }
@@ -65,3 +66,4 @@ public class Train {
         System.out.println("\nProgram continues safely...");
     }
 }
+
