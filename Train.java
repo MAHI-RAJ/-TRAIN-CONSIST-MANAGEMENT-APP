@@ -1,32 +1,49 @@
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-public class TrainConsistApp {
+public class Train {
+
     public static void main(String[] args) {
-        System.out.println("=== Train Consist Management App (UC6) ===");
+        Scanner scanner = new Scanner(System.in);
 
-        // 1. Initialize HashMap: Key (String) -> Value (Integer)
-        Map<String, Integer> bogieCapacities = new HashMap<>();
+        // Regex patterns
+        String trainIdRegex = "TRN-\\d{4}";
+        String cargoCodeRegex = "PET-[A-Z]{2}";
 
-        // 2. put() Method: Mapping Bogie Names to their Seat/Load Capacities
-        System.out.println("Registering Bogie Capacities...");
-        bogieCapacities.put("Sleeper", 72);
-        bogieCapacities.put("AC Chair", 56);
-        bogieCapacities.put("First Class", 24);
-        bogieCapacities.put("General", 90);
+        // Compile patterns
+        Pattern trainPattern = Pattern.compile(trainIdRegex);
+        Pattern cargoPattern = Pattern.compile(cargoCodeRegex);
 
-        // 3. entrySet() Iteration: Accessing both Key and Value together
-        System.out.println("\n--- Train Capacity Directory ---");
-        for (Map.Entry<String, Integer> entry : bogieCapacities.entrySet()) {
-            System.out.println("Bogie Type: " + entry.getKey() +
-                    " | Capacity: " + entry.getValue() + " seats");
+        // User input
+        System.out.print("Enter Train ID: ");
+        String trainId = scanner.nextLine();
+
+        System.out.print("Enter Cargo Code: ");
+        String cargoCode = scanner.nextLine();
+
+        // Create matchers
+        Matcher trainMatcher = trainPattern.matcher(trainId);
+        Matcher cargoMatcher = cargoPattern.matcher(cargoCode);
+
+        // Validate using matches()
+        boolean isTrainIdValid = trainMatcher.matches();
+        boolean isCargoCodeValid = cargoMatcher.matches();
+
+        // Display results
+        if (isTrainIdValid) {
+            System.out.println("Train ID is valid.");
+        } else {
+            System.out.println("Train ID is invalid. Format should be like TRN-1234");
         }
 
-        // 4. Fast Lookup: Retrieving a specific value using a Key
-        String searchBogie = "AC Chair";
-        if (bogieCapacities.containsKey(searchBogie)) {
-            System.out.println("\nQuick Search: " + searchBogie +
-                    " has a capacity of " + bogieCapacities.get(searchBogie) + ".");
+        if (isCargoCodeValid) {
+            System.out.println("Cargo Code is valid.");
+        } else {
+            System.out.println("Cargo Code is invalid. Format should be like PET-AB");
         }
+
+        System.out.println("Program continues...");
+        scanner.close();
     }
 }
