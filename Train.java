@@ -1,55 +1,92 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Train {
 
-    static class GoodsBogie {
-        private String type;
-        private String cargo;
+    static class Bogie {
+        private String name;
+        private int capacity;
 
-        public GoodsBogie(String type, String cargo) {
-            this.type = type;
-            this.cargo = cargo;
+        public Bogie(String name, int capacity) {
+            this.name = name;
+            this.capacity = capacity;
         }
 
-        public String getType() {
-            return type;
+        public String getName() {
+            return name;
         }
 
-        public String getCargo() {
-            return cargo;
+        public int getCapacity() {
+            return capacity;
         }
 
         @Override
         public String toString() {
-            return "GoodsBogie{type='" + type + "', cargo='" + cargo + "'}";
+            return "Bogie Name: " + name + ", Capacity: " + capacity;
         }
     }
 
     public static void main(String[] args) {
-        List<GoodsBogie> bogies = new ArrayList<>();
+        List<Bogie> bogies = new ArrayList<>();
 
-        bogies.add(new GoodsBogie("Cylindrical", "Petroleum"));
-        bogies.add(new GoodsBogie("Open", "Coal"));
-        bogies.add(new GoodsBogie("Box", "Grain"));
-        bogies.add(new GoodsBogie("Cylindrical", "Petroleum"));
-
-        System.out.println("Goods Bogies in Train:");
-        for (GoodsBogie bogie : bogies) {
-            System.out.println(bogie);
+        // Creating a larger dataset for comparison
+        for (int i = 1; i <= 100000; i++) {
+            if (i % 3 == 0) {
+                bogies.add(new Bogie("Sleeper", 72));
+            } else if (i % 3 == 1) {
+                bogies.add(new Bogie("AC Chair", 56));
+            } else {
+                bogies.add(new Bogie("First Class", 24));
+            }
         }
 
-        boolean isSafe = bogies.stream()
-                .allMatch(b -> !b.getType().equalsIgnoreCase("Cylindrical")
-                        || b.getCargo().equalsIgnoreCase("Petroleum"));
+        // Loop-based filtering
+        long loopStart = System.nanoTime();
 
-        System.out.println("\nSafety Compliance Check:");
-        if (isSafe) {
-            System.out.println("Train is safety compliant.");
+        List<Bogie> loopFiltered = new ArrayList<>();
+        for (Bogie bogie : bogies) {
+            if (bogie.getCapacity() > 60) {
+                loopFiltered.add(bogie);
+            }
+        }
+
+        long loopEnd = System.nanoTime();
+        long loopTime = loopEnd - loopStart;
+
+        // Stream-based filtering
+        long streamStart = System.nanoTime();
+
+        List<Bogie> streamFiltered = bogies.stream()
+                .filter(b -> b.getCapacity() > 60)
+                .collect(Collectors.toList());
+
+        long streamEnd = System.nanoTime();
+        long streamTime = streamEnd - streamStart;
+
+        // Display results
+        System.out.println("Total bogies created: " + bogies.size());
+
+        System.out.println("\nLoop-Based Filtering:");
+        System.out.println("Filtered bogies count: " + loopFiltered.size());
+        System.out.println("Execution time: " + loopTime + " ns");
+
+        System.out.println("\nStream-Based Filtering:");
+        System.out.println("Filtered bogies count: " + streamFiltered.size());
+        System.out.println("Execution time: " + streamTime + " ns");
+
+        // Result consistency check
+        System.out.println("\nResult Consistency Check:");
+        if (loopFiltered.size() == streamFiltered.size()) {
+            System.out.println("Both loop and stream produced the same number of filtered bogies.");
         } else {
-            System.out.println("Train is NOT safety compliant.");
+            System.out.println("Loop and stream results are different.");
         }
 
+        System.out.println("\nSample Filtered Bogies:");
+        for (int i = 0; i < Math.min(5, loopFiltered.size()); i++) {
+            System.out.println(loopFiltered.get(i));
+        }
         System.out.println("\nProgram continues...");
     }
 }
