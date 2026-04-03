@@ -1,8 +1,5 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 public class Train {
 
     static class Bogie {
@@ -25,38 +22,27 @@ public class Train {
         @Override
         public String toString() {
             return "Bogie Name: " + name + ", Capacity: " + capacity;
+
         }
     }
-
     public static void main(String[] args) {
         List<Bogie> bogies = new ArrayList<>();
 
         bogies.add(new Bogie("Sleeper", 72));
         bogies.add(new Bogie("AC Chair", 56));
         bogies.add(new Bogie("First Class", 24));
-        bogies.add(new Bogie("Sleeper", 72));
-        bogies.add(new Bogie("AC Chair", 56));
 
-        System.out.println("Original Bogie List:");
+        System.out.println("Passenger Bogies in Train:");
         for (Bogie bogie : bogies) {
             System.out.println(bogie);
         }
 
-        Map<String, List<Bogie>> groupedBogies = bogies.stream()
-                .collect(Collectors.groupingBy(Bogie::getName));
+        int totalSeats = bogies.stream()
+                .map(Bogie::getCapacity)
+                .reduce(0, Integer::sum);
 
-        System.out.println("\nGrouped Bogies By Type:");
-        for (Map.Entry<String, List<Bogie>> entry : groupedBogies.entrySet()) {
-            System.out.println(entry.getKey() + " ->");
-            for (Bogie bogie : entry.getValue()) {
-                System.out.println("   " + bogie);
-            }
-        }
-
-        System.out.println("\nOriginal Bogie List After Grouping (Unchanged):");
-        for (Bogie bogie : bogies) {
-            System.out.println(bogie);
-        }
-
+        System.out.println("\nTotal Seating Capacity of Train: " + totalSeats);
         System.out.println("\nProgram continues...");
     }
+}
+
