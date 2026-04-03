@@ -1,32 +1,55 @@
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
-public class TrainConsistApp {
+public class Train {
+
+    static class GoodsBogie {
+        private String type;
+        private String cargo;
+
+        public GoodsBogie(String type, String cargo) {
+            this.type = type;
+            this.cargo = cargo;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public String getCargo() {
+            return cargo;
+        }
+
+        @Override
+        public String toString() {
+            return "GoodsBogie{type='" + type + "', cargo='" + cargo + "'}";
+        }
+    }
+
     public static void main(String[] args) {
-        System.out.println("=== Train Consist Management App (UC6) ===");
+        List<GoodsBogie> bogies = new ArrayList<>();
 
-        // 1. Initialize HashMap: Key (String) -> Value (Integer)
-        Map<String, Integer> bogieCapacities = new HashMap<>();
+        bogies.add(new GoodsBogie("Cylindrical", "Petroleum"));
+        bogies.add(new GoodsBogie("Open", "Coal"));
+        bogies.add(new GoodsBogie("Box", "Grain"));
+        bogies.add(new GoodsBogie("Cylindrical", "Petroleum"));
 
-        // 2. put() Method: Mapping Bogie Names to their Seat/Load Capacities
-        System.out.println("Registering Bogie Capacities...");
-        bogieCapacities.put("Sleeper", 72);
-        bogieCapacities.put("AC Chair", 56);
-        bogieCapacities.put("First Class", 24);
-        bogieCapacities.put("General", 90);
-
-        // 3. entrySet() Iteration: Accessing both Key and Value together
-        System.out.println("\n--- Train Capacity Directory ---");
-        for (Map.Entry<String, Integer> entry : bogieCapacities.entrySet()) {
-            System.out.println("Bogie Type: " + entry.getKey() +
-                    " | Capacity: " + entry.getValue() + " seats");
+        System.out.println("Goods Bogies in Train:");
+        for (GoodsBogie bogie : bogies) {
+            System.out.println(bogie);
         }
 
-        // 4. Fast Lookup: Retrieving a specific value using a Key
-        String searchBogie = "AC Chair";
-        if (bogieCapacities.containsKey(searchBogie)) {
-            System.out.println("\nQuick Search: " + searchBogie +
-                    " has a capacity of " + bogieCapacities.get(searchBogie) + ".");
+        boolean isSafe = bogies.stream()
+                .allMatch(b -> !b.getType().equalsIgnoreCase("Cylindrical")
+                        || b.getCargo().equalsIgnoreCase("Petroleum"));
+
+        System.out.println("\nSafety Compliance Check:");
+        if (isSafe) {
+            System.out.println("Train is safety compliant.");
+        } else {
+            System.out.println("Train is NOT safety compliant.");
         }
+
+        System.out.println("\nProgram continues...");
     }
 }
