@@ -1,14 +1,10 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
-public class Train{
+public class Train {
 
-    // Bogie class
-import java.util.Comparator;
-import java.util.List;
-
-public class Train{
     static class Bogie {
         private String name;
         private int capacity;
@@ -32,55 +28,35 @@ public class Train{
         }
     }
 
-    // Method to filter bogies using Stream API
-    public static List<Bogie> filterBogiesByCapacity(List<Bogie> bogies, int threshold) {
-        return bogies.stream()
-                .filter(b -> b.getCapacity() > threshold)
-                .collect(Collectors.toList());
-    }
-
-    public static void main(String[] args) {
-
-        // Original bogie list
-        List<Bogie> bogies = new ArrayList<>();
-        bogies.add(new Bogie("Sleeper", 72));
-        bogies.add(new Bogie("AC Chair", 56));
-        bogies.add(new Bogie("First Class", 24));
-        bogies.add(new Bogie("General Coach", 90));
-
-        int threshold = 60;
-
-        System.out.println("Original Passenger Bogies:"
-
     public static void main(String[] args) {
         List<Bogie> bogies = new ArrayList<>();
 
-        // Adding passenger bogies
         bogies.add(new Bogie("Sleeper", 72));
         bogies.add(new Bogie("AC Chair", 56));
         bogies.add(new Bogie("First Class", 24));
+        bogies.add(new Bogie("Sleeper", 72));
+        bogies.add(new Bogie("AC Chair", 56));
 
-        System.out.println("Passenger Bogies Before Sorting:");
+        System.out.println("Original Bogie List:");
         for (Bogie bogie : bogies) {
             System.out.println(bogie);
         }
-        // Filter using streams
-        List<Bogie> filteredBogies = filterBogiesByCapacity(bogies, threshold);
 
-        System.out.println("\nFiltered Passenger Bogies (Capacity > " + threshold + "):");
-        if (filteredBogies.isEmpty()) {
-            System.out.println("No bogies matched the filter condition.");
-        } else {
-            for (Bogie bogie : filteredBogies) {
-                System.out.println(bogie);
+        Map<String, List<Bogie>> groupedBogies = bogies.stream()
+                .collect(Collectors.groupingBy(Bogie::getName));
+
+        System.out.println("\nGrouped Bogies By Type:");
+        for (Map.Entry<String, List<Bogie>> entry : groupedBogies.entrySet()) {
+            System.out.println(entry.getKey() + " ->");
+            for (Bogie bogie : entry.getValue()) {
+                System.out.println("   " + bogie);
             }
         }
 
-        // Show original list remains unchanged
-        System.out.println("\nOriginal Passenger Bogies After Filtering (Unchanged):");
+        System.out.println("\nOriginal Bogie List After Grouping (Unchanged):");
         for (Bogie bogie : bogies) {
             System.out.println(bogie);
         }
 
         System.out.println("\nProgram continues...");
-}
+    }
