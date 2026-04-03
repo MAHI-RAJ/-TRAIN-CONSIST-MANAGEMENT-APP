@@ -28,7 +28,6 @@ public class Train {
     }
 
     public static void main(String[] args) {
-
         List<Bogie> bogies = new ArrayList<>();
 
         // Creating a larger dataset for comparison
@@ -88,7 +87,7 @@ public class Train {
         for (int i = 0; i < Math.min(5, loopFiltered.size()); i++) {
             System.out.println(loopFiltered.get(i));
         }
-
         System.out.println("\nProgram continues...");
     }
 }
+
