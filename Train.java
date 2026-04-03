@@ -5,6 +5,10 @@ import java.util.stream.Collectors;
 public class Train{
 
     // Bogie class
+import java.util.Comparator;
+import java.util.List;
+
+public class Train{
     static class Bogie {
         private String name;
         private int capacity;
@@ -46,11 +50,20 @@ public class Train{
 
         int threshold = 60;
 
-        System.out.println("Original Passenger Bogies:");
+        System.out.println("Original Passenger Bogies:"
+
+    public static void main(String[] args) {
+        List<Bogie> bogies = new ArrayList<>();
+
+        // Adding passenger bogies
+        bogies.add(new Bogie("Sleeper", 72));
+        bogies.add(new Bogie("AC Chair", 56));
+        bogies.add(new Bogie("First Class", 24));
+
+        System.out.println("Passenger Bogies Before Sorting:");
         for (Bogie bogie : bogies) {
             System.out.println(bogie);
         }
-
         // Filter using streams
         List<Bogie> filteredBogies = filterBogiesByCapacity(bogies, threshold);
 
@@ -70,5 +83,4 @@ public class Train{
         }
 
         System.out.println("\nProgram continues...");
-    }
 }
