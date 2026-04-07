@@ -33,5 +33,6 @@ public class Train{
         Arrays.sort(array);
 
         System.out.println("After : " + Arrays.toString(array));
+
     }
 }
