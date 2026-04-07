@@ -1,69 +1,56 @@
-import java.util.ArrayList;
-import java.util.List;
-
 public class Train {
 
-    // Custom exception class
-    static class InvalidCapacityException extends Exception {
-        public InvalidCapacityException(String message) {
-            super(message);
-        }
-    }
+    /**
+     * Performs a Linear Search to find a specific Bogie ID.
+     * Logic: Sequential traversal with early termination upon match.
+     * Time Complexity: O(n)
+     */
+    public static boolean findBogieById(String[] bogieIds, String searchKey) {
+        System.out.println("Searching for Bogie ID: " + searchKey + "...");
 
-    // Passenger Bogie class
-    static class PassengerBogie {
-        private String type;
-        private int capacity;
-
-        public PassengerBogie(String type, int capacity) throws InvalidCapacityException {
-            if (capacity <= 0) {
-                throw new InvalidCapacityException("Capacity must be greater than zero");
+        for (int i = 0; i < bogieIds.length; i++) {
+            // Using .equals() for safe String comparison
+            if (bogieIds[i].equals(searchKey)) {
+                System.out.println("Match found at position: " + (i + 1));
+                return true; // Early termination: stop searching once found
             }
-            this.type = type;
-            this.capacity = capacity;
         }
 
-        public String getType() {
-            return type;
-        }
-
-        public int getCapacity() {
-            return capacity;
-        }
-
-        @Override
-        public String toString() {
-
-            return "PassengerBogie{type='" + type + "', capacity=" + capacity + "}";
-        }
+        return false; // Traversed entire list, no match found
     }
 
     public static void main(String[] args) {
-        List<PassengerBogie> trainConsist = new ArrayList<>();
+        System.out.println("=== Train Consist Management System (UC18: Linear Search) ===");
 
-        try {
-            PassengerBogie b1 = new PassengerBogie("Sleeper", 72);
-            trainConsist.add(b1);
-            System.out.println("Added successfully: " + b1);
+        // Initial Unsorted Consist Data
+        String[] consist = {"BG101", "BG205", "BG309", "BG412", "BG550"};
 
-            PassengerBogie b2 = new PassengerBogie("AC Chair", 56);
-            trainConsist.add(b2);
-            System.out.println("Added successfully: " + b2);
+        // TEST CASE 1: Basic Search (Bogie Found)
+        runSearchTest(consist, "BG309");
 
-            PassengerBogie b3 = new PassengerBogie("First Class", 0); // invalid
-            trainConsist.add(b3);
-            System.out.println("Added successfully: " + b3);
+        // TEST CASE 2: Search for First Element
+        runSearchTest(consist, "BG101");
 
-        } catch (InvalidCapacityException e) {
-            System.out.println("Error: " + e.getMessage());
+        // TEST CASE 3: Search for Last Element
+        runSearchTest(consist, "BG550");
+
+        // TEST CASE 4: Search for Non-Existent Bogie
+        runSearchTest(consist, "BG999");
+
+        // TEST CASE 5: Single Element Array
+        String[] singleBogie = {"BG101"};
+        runSearchTest(singleBogie, "BG101");
+
+        System.out.println("\nSearch operations completed. System ready for next task.");
+    }
+
+    private static void runSearchTest(String[] data, String key) {
+        System.out.println("-------------------------------------------------");
+        boolean isFound = findBogieById(data, key);
+        if (isFound) {
+            System.out.println("RESULT: Bogie " + key + " is present in the consist.");
+        } else {
+            System.out.println("RESULT: Bogie " + key + " not found in the current consist.");
         }
-
-        System.out.println("\nValid bogies currently in train consist:");
-        for (PassengerBogie bogie : trainConsist) {
-            System.out.println(bogie);
-        }
-
-        System.out.println("\nProgram continues safely...");
     }
 }
-
