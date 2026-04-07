@@ -1,66 +1,38 @@
-public class Train {
+import java.util.Arrays;
 
-    /**
-     * Sorts bogie capacities using the Bubble Sort algorithm.
-     * Logic: Compares adjacent elements and swaps them if they are in the wrong order.
-     * Time Complexity: O(n^2)
-     */
-    public static void bubbleSort(int[] capacities) {
-        int n = capacities.length;
-        boolean swapped;
-
-        // Outer loop for the number of passes
-        for (int i = 0; i < n - 1; i++) {
-            swapped = false;
-
-            // Inner loop for adjacent comparisons
-            // (n - i - 1) because the last i elements are already sorted
-            for (int j = 0; j < n - i - 1; j++) {
-
-                // Compare adjacent elements
-                if (capacities[j] > capacities[j + 1]) {
-                    // Perform Swap
-                    int temp = capacities[j];
-                    capacities[j] = capacities[j + 1];
-                    capacities[j + 1] = temp;
-
-                    swapped = true;
-                }
-            }
-
-            // Optimization: If no two elements were swapped in the inner loop, break
-            if (!swapped) break;
-        }
-    }
-
-    public static void displayCapacities(String message, int[] capacities) {
-        System.out.print(message + ": [");
-        for (int i = 0; i < capacities.length; i++) {
-            System.out.print(capacities[i] + (i == capacities.length - 1 ? "" : ", "));
-        }
-        System.out.println("]");
-    }
+public class Train{
 
     public static void main(String[] args) {
-        System.out.println("=== Train Consist Management System (UC16: Manual Sorting) ===");
+        System.out.println("=== Train Consist Management System (UC17: Optimized Sorting) ===");
 
-        // Test Case: Unsorted Passenger Bogie Capacities
-        int[] bogieCapacities = {72, 56, 24, 70, 60};
+        // 1. Setup various test scenarios for bogie names
+        String[] bogieTypes = {"Sleeper", "AC Chair", "First Class", "General", "Luxury"};
+        String[] unsortedInput = {"Luxury", "General", "Sleeper", "AC Chair"};
+        String[] duplicates = {"Sleeper", "AC Chair", "Sleeper", "General"};
+        String[] singleElement = {"Sleeper"};
 
-        displayCapacities("Original Capacities", bogieCapacities);
+        // 2. Perform sorting using Arrays.sort()
+        System.out.println("\n--- Execution: Sorting Bogie Names ---");
 
-        // Execute Manual Bubble Sort
-        System.out.println("Executing Bubble Sort Algorithm...");
-        bubbleSort(bogieCapacities);
+        sortAndDisplay("Basic Alphabetical Sort", bogieTypes);
+        sortAndDisplay("Unsorted Input Handling", unsortedInput);
+        sortAndDisplay("Duplicate Bogie Names", duplicates);
+        sortAndDisplay("Single Element Array", singleElement);
 
-        displayCapacities("Sorted Capacities (Ascending)", bogieCapacities);
+        System.out.println("\nSystem Status: All bogie names indexed alphabetically.");
+    }
 
-        // Verify with Duplicate Values
-        int[] duplicates = {72, 56, 56, 24};
-        System.out.println("\nHandling Duplicate Capacities...");
-        bubbleSort(duplicates);
-        displayCapacities("Sorted Duplicates", duplicates);
+    /**
+     * Utility method to sort and print results using Java standard library tools.
+     */
+    private static void sortAndDisplay(String scenario, String[] array) {
+        System.out.println("\nScenario: " + scenario);
+        System.out.println("Before: " + Arrays.toString(array));
 
-        System.out.println("\nSorting complete. System ready for passenger allocation.");
+        // Optimized built-in sorting (O(n log n))
+        Arrays.sort(array);
+
+        System.out.println("After : " + Arrays.toString(array));
+
     }
 }
