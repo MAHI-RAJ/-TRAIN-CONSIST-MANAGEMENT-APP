@@ -1,69 +1,37 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
-public class Train {
-
-    // Custom exception class
-    static class InvalidCapacityException extends Exception {
-        public InvalidCapacityException(String message) {
-            super(message);
-        }
-    }
-
-    // Passenger Bogie class
-    static class PassengerBogie {
-        private String type;
-        private int capacity;
-
-        public PassengerBogie(String type, int capacity) throws InvalidCapacityException {
-            if (capacity <= 0) {
-                throw new InvalidCapacityException("Capacity must be greater than zero");
-            }
-            this.type = type;
-            this.capacity = capacity;
-        }
-
-        public String getType() {
-            return type;
-        }
-
-        public int getCapacity() {
-            return capacity;
-        }
-
-        @Override
-        public String toString() {
-
-            return "PassengerBogie{type='" + type + "', capacity=" + capacity + "}";
-        }
-    }
+public class Train{
 
     public static void main(String[] args) {
-        List<PassengerBogie> trainConsist = new ArrayList<>();
+        System.out.println("=== Train Consist Management System (UC17: Optimized Sorting) ===");
 
-        try {
-            PassengerBogie b1 = new PassengerBogie("Sleeper", 72);
-            trainConsist.add(b1);
-            System.out.println("Added successfully: " + b1);
+        // 1. Setup various test scenarios for bogie names
+        String[] bogieTypes = {"Sleeper", "AC Chair", "First Class", "General", "Luxury"};
+        String[] unsortedInput = {"Luxury", "General", "Sleeper", "AC Chair"};
+        String[] duplicates = {"Sleeper", "AC Chair", "Sleeper", "General"};
+        String[] singleElement = {"Sleeper"};
 
-            PassengerBogie b2 = new PassengerBogie("AC Chair", 56);
-            trainConsist.add(b2);
-            System.out.println("Added successfully: " + b2);
+        // 2. Perform sorting using Arrays.sort()
+        System.out.println("\n--- Execution: Sorting Bogie Names ---");
 
-            PassengerBogie b3 = new PassengerBogie("First Class", 0); // invalid
-            trainConsist.add(b3);
-            System.out.println("Added successfully: " + b3);
+        sortAndDisplay("Basic Alphabetical Sort", bogieTypes);
+        sortAndDisplay("Unsorted Input Handling", unsortedInput);
+        sortAndDisplay("Duplicate Bogie Names", duplicates);
+        sortAndDisplay("Single Element Array", singleElement);
 
-        } catch (InvalidCapacityException e) {
-            System.out.println("Error: " + e.getMessage());
-        }
+        System.out.println("\nSystem Status: All bogie names indexed alphabetically.");
+    }
 
-        System.out.println("\nValid bogies currently in train consist:");
-        for (PassengerBogie bogie : trainConsist) {
-            System.out.println(bogie);
-        }
+    /**
+     * Utility method to sort and print results using Java standard library tools.
+     */
+    private static void sortAndDisplay(String scenario, String[] array) {
+        System.out.println("\nScenario: " + scenario);
+        System.out.println("Before: " + Arrays.toString(array));
 
-        System.out.println("\nProgram continues safely...");
+        // Optimized built-in sorting (O(n log n))
+        Arrays.sort(array);
+
+        System.out.println("After : " + Arrays.toString(array));
     }
 }
-
