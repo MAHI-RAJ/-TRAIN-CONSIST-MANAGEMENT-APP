@@ -53,4 +53,5 @@ public class Train {
             System.out.println("RESULT: Bogie " + key + " not found in the current consist.");
         }
     }
+
 }
