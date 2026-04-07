@@ -1,69 +1,65 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 public class Train {
 
-    // Custom exception class
-    static class InvalidCapacityException extends Exception {
-        public InvalidCapacityException(String message) {
-            super(message);
-        }
-    }
+    /**
+     * Performs a Binary Search on a sorted array of Bogie IDs.
+     * Precondition: The array must be sorted.
+     * Logic: Divide-and-Conquer using low, mid, and high pointers.
+     * Time Complexity: O(log n)
+     */
+    public static boolean binarySearchBogie(String[] bogieIds, String searchKey) {
+        // Requirement: Ensure data is sorted before searching
+        Arrays.sort(bogieIds);
 
-    // Passenger Bogie class
-    static class PassengerBogie {
-        private String type;
-        private int capacity;
+        int low = 0;
+        int high = bogieIds.length - 1;
 
-        public PassengerBogie(String type, int capacity) throws InvalidCapacityException {
-            if (capacity <= 0) {
-                throw new InvalidCapacityException("Capacity must be greater than zero");
+        System.out.println("Searching for: " + searchKey + " (Optimized)");
+
+        while (low <= high) {
+            int mid = low + (high - low) / 2; // Calculate middle index
+
+            // Compare strings lexicographically
+            int comparison = searchKey.compareTo(bogieIds[mid]);
+
+            if (comparison == 0) {
+                System.out.println("Match found at index: " + mid);
+                return true; // Target found
+            } else if (comparison < 0) {
+                high = mid - 1; // Target is in the left half
+            } else {
+                low = mid + 1;  // Target is in the right half
             }
-            this.type = type;
-            this.capacity = capacity;
         }
 
-        public String getType() {
-            return type;
-        }
-
-        public int getCapacity() {
-            return capacity;
-        }
-
-        @Override
-        public String toString() {
-
-            return "PassengerBogie{type='" + type + "', capacity=" + capacity + "}";
-        }
+        return false; // Target not found
     }
 
     public static void main(String[] args) {
-        List<PassengerBogie> trainConsist = new ArrayList<>();
+        System.out.println("=== Train Consist Management System (UC19: Binary Search) ===");
 
-        try {
-            PassengerBogie b1 = new PassengerBogie("Sleeper", 72);
-            trainConsist.add(b1);
-            System.out.println("Added successfully: " + b1);
+        // Test Case 1: Unsorted input (will be handled by internal sort)
+        String[] consist = {"BG309", "BG101", "BG550", "BG205", "BG412"};
 
-            PassengerBogie b2 = new PassengerBogie("AC Chair", 56);
-            trainConsist.add(b2);
-            System.out.println("Added successfully: " + b2);
+        runTest("Standard Search", consist, "BG309");
+        runTest("First Element", consist, "BG101");
+        runTest("Last Element", consist, "BG550");
+        runTest("Not Found", consist, "BG999");
 
-            PassengerBogie b3 = new PassengerBogie("First Class", 0); // invalid
-            trainConsist.add(b3);
-            System.out.println("Added successfully: " + b3);
+        // Test Case 2: Empty Array
+        String[] emptyConsist = {};
+        runTest("Empty Array Handling", emptyConsist, "BG101");
 
-        } catch (InvalidCapacityException e) {
-            System.out.println("Error: " + e.getMessage());
-        }
+        // Test Case 3: Single Element
+        String[] singleBogie = {"BG101"};
+        runTest("Single Element Handling", singleBogie, "BG101");
+    }
 
-        System.out.println("\nValid bogies currently in train consist:");
-        for (PassengerBogie bogie : trainConsist) {
-            System.out.println(bogie);
-        }
-
-        System.out.println("\nProgram continues safely...");
+    private static void runTest(String scenario, String[] data, String key) {
+        System.out.println("\nScenario: " + scenario);
+        boolean result = binarySearchBogie(data, key);
+        System.out.println("RESULT: " + (result ? "Bogie Found!" : "Bogie Not Found."));
+        System.out.println("-------------------------------------------------");
     }
 }
-
