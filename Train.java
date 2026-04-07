@@ -1,69 +1,66 @@
-import java.util.ArrayList;
-import java.util.List;
-
 public class Train {
 
-    // Custom exception class
-    static class InvalidCapacityException extends Exception {
-        public InvalidCapacityException(String message) {
-            super(message);
+    /**
+     * Sorts bogie capacities using the Bubble Sort algorithm.
+     * Logic: Compares adjacent elements and swaps them if they are in the wrong order.
+     * Time Complexity: O(n^2)
+     */
+    public static void bubbleSort(int[] capacities) {
+        int n = capacities.length;
+        boolean swapped;
+
+        // Outer loop for the number of passes
+        for (int i = 0; i < n - 1; i++) {
+            swapped = false;
+
+            // Inner loop for adjacent comparisons
+            // (n - i - 1) because the last i elements are already sorted
+            for (int j = 0; j < n - i - 1; j++) {
+
+                // Compare adjacent elements
+                if (capacities[j] > capacities[j + 1]) {
+                    // Perform Swap
+                    int temp = capacities[j];
+                    capacities[j] = capacities[j + 1];
+                    capacities[j + 1] = temp;
+
+                    swapped = true;
+                }
+            }
+
+            // Optimization: If no two elements were swapped in the inner loop, break
+            if (!swapped) break;
         }
     }
 
-    // Passenger Bogie class
-    static class PassengerBogie {
-        private String type;
-        private int capacity;
-
-        public PassengerBogie(String type, int capacity) throws InvalidCapacityException {
-            if (capacity <= 0) {
-                throw new InvalidCapacityException("Capacity must be greater than zero");
-            }
-            this.type = type;
-            this.capacity = capacity;
+    public static void displayCapacities(String message, int[] capacities) {
+        System.out.print(message + ": [");
+        for (int i = 0; i < capacities.length; i++) {
+            System.out.print(capacities[i] + (i == capacities.length - 1 ? "" : ", "));
         }
-
-        public String getType() {
-            return type;
-        }
-
-        public int getCapacity() {
-            return capacity;
-        }
-
-        @Override
-        public String toString() {
-
-            return "PassengerBogie{type='" + type + "', capacity=" + capacity + "}";
-        }
+        System.out.println("]");
     }
 
     public static void main(String[] args) {
-        List<PassengerBogie> trainConsist = new ArrayList<>();
+        System.out.println("=== Train Consist Management System (UC16: Manual Sorting) ===");
 
-        try {
-            PassengerBogie b1 = new PassengerBogie("Sleeper", 72);
-            trainConsist.add(b1);
-            System.out.println("Added successfully: " + b1);
+        // Test Case: Unsorted Passenger Bogie Capacities
+        int[] bogieCapacities = {72, 56, 24, 70, 60};
 
-            PassengerBogie b2 = new PassengerBogie("AC Chair", 56);
-            trainConsist.add(b2);
-            System.out.println("Added successfully: " + b2);
+        displayCapacities("Original Capacities", bogieCapacities);
 
-            PassengerBogie b3 = new PassengerBogie("First Class", 0); // invalid
-            trainConsist.add(b3);
-            System.out.println("Added successfully: " + b3);
+        // Execute Manual Bubble Sort
+        System.out.println("Executing Bubble Sort Algorithm...");
+        bubbleSort(bogieCapacities);
 
-        } catch (InvalidCapacityException e) {
-            System.out.println("Error: " + e.getMessage());
-        }
+        displayCapacities("Sorted Capacities (Ascending)", bogieCapacities);
 
-        System.out.println("\nValid bogies currently in train consist:");
-        for (PassengerBogie bogie : trainConsist) {
-            System.out.println(bogie);
-        }
+        // Verify with Duplicate Values
+        int[] duplicates = {72, 56, 56, 24};
+        System.out.println("\nHandling Duplicate Capacities...");
+        bubbleSort(duplicates);
+        displayCapacities("Sorted Duplicates", duplicates);
 
-        System.out.println("\nProgram continues safely...");
+        System.out.println("\nSorting complete. System ready for passenger allocation.");
     }
 }
-
